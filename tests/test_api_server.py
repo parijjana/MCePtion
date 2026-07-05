@@ -8,6 +8,7 @@ from workspace_utils import test_workspace
 
 from mcp_hub.api_server import HtmlResponse, LocalThreadingHTTPServer, _html_dashboard
 from mcp_hub.dashboard import render_dashboard
+from mcp_hub.dashboard_style import DASHBOARD_CSS
 from mcp_hub.manager import HubManager
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,6 +25,15 @@ class ApiServerTests(unittest.TestCase):
 
     def test_server_allows_address_reuse_for_script_restarts(self) -> None:
         self.assertTrue(LocalThreadingHTTPServer.allow_reuse_address)
+
+    def test_dashboard_uses_neo_brutalist_style_markers(self) -> None:
+        response = _html_dashboard(HubManager.from_root(ROOT))
+
+        self.assertIn("border: 4px solid var(--line)", response.content)
+        self.assertIn("box-shadow: var(--shadow)", response.content)
+        self.assertIn("--yellow: #ffd400", response.content)
+        self.assertIn("border-radius: 0", response.content)
+        self.assertIsInstance(DASHBOARD_CSS, str)
 
     def test_dashboard_shows_stdio_connection_and_probe_without_stop(self) -> None:
         hub_root = _copy_hub_minimum("dashboard-valid-stdio")

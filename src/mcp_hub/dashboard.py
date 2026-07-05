@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from .dashboard_style import DASHBOARD_CSS
 from .manager import HubManager
 
 
@@ -26,115 +27,7 @@ def render_dashboard(manager: HubManager) -> HtmlResponse:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MCP Hub</title>
-  <style>
-    :root {{
-      color-scheme: light;
-      --bg: #f5f7f8;
-      --panel: #ffffff;
-      --ink: #1f2328;
-      --muted: #59636e;
-      --line: #ccd4dc;
-      --accent: #0969da;
-      --bad: #b42318;
-      --good: #1a7f37;
-      --warn: #9a6700;
-    }}
-    body {{
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Segoe UI, Arial, sans-serif;
-      font-size: 14px;
-    }}
-    main {{
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 22px;
-    }}
-    header {{
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 18px;
-    }}
-    h1 {{ font-size: 24px; margin: 0 0 4px; }}
-    h2 {{ font-size: 16px; margin: 22px 0 10px; }}
-    p {{ margin: 0; }}
-    table {{
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--panel);
-      border: 1px solid var(--line);
-    }}
-    th, td {{
-      border-bottom: 1px solid var(--line);
-      padding: 10px;
-      text-align: left;
-      vertical-align: top;
-    }}
-    th {{
-      background: #e8edf2;
-      font-size: 12px;
-      text-transform: uppercase;
-      color: #3d4650;
-    }}
-    code, pre {{
-      background: #eef2f5;
-      border: 1px solid #d8dee4;
-      border-radius: 4px;
-      font-family: Consolas, monospace;
-    }}
-    code {{ padding: 1px 4px; }}
-    pre {{
-      min-width: 260px;
-      max-width: 420px;
-      max-height: 220px;
-      margin: 0;
-      padding: 8px;
-      overflow: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }}
-    button {{
-      min-width: 76px;
-      min-height: 30px;
-      border: 1px solid #8c959f;
-      border-radius: 4px;
-      background: #ffffff;
-      color: var(--ink);
-      cursor: pointer;
-    }}
-    button.primary {{
-      border-color: var(--accent);
-      color: #ffffff;
-      background: var(--accent);
-    }}
-    form {{ display: inline-block; margin: 0 6px 6px 0; }}
-    .muted {{ color: var(--muted); }}
-    .status {{ font-weight: 700; }}
-    .ready, .running {{ color: var(--good); }}
-    .invalid {{ color: var(--bad); }}
-    .stopped, .unknown {{ color: var(--warn); }}
-    .errors {{ color: var(--bad); margin: 0; padding-left: 18px; }}
-    .empty {{ color: var(--muted); }}
-    .toolbar {{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }}
-    .meta {{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 12px;
-    }}
-    .meta-block {{
-      background: var(--panel);
-      border: 1px solid var(--line);
-      padding: 12px;
-    }}
-  </style>
+  <style>{DASHBOARD_CSS}</style>
 </head>
 <body>
   <main>
@@ -191,7 +84,7 @@ def _service_row(manager: HubManager, service: dict[str, Any]) -> str:
     status_class = str(service["status"]).lower().replace(" ", "-")
     return (
         "<tr>"
-        f"<td><strong>{_escape(service['name'])}</strong><br>"
+        f'<td><strong class="service-name">{_escape(service["name"])}</strong><br>'
         f"<code>{_escape(service_id)}</code><br>"
         f'<span class="muted">{_escape(service.get("version", ""))}</span></td>'
         f"<td>{_escape(service['lifecycle'])}</td>"

@@ -95,6 +95,8 @@ http://127.0.0.1:7420/
 
 It lists discovered services, lifecycle class, transport, validation status, capability brief, direct connection recipe, and lifecycle-aware controls. Command-per-client stdio services show Probe and Connection actions instead of misleading Stop controls. Daemon services show Start, Stop, Restart, and Connection actions.
 
+The current dashboard is server-rendered and uses a dense neo-brutalist visual style: thick borders, hard shadows, sharp corners, and high-contrast status colors. No frontend build stack is required for the current dashboard.
+
 ## Important Design Constraint
 
 Stdio MCP servers are command-per-client services. The hub can validate them, probe them, and publish their direct launch recipe, but it cannot make one shared background stdio process available to arbitrary agents without adding an explicit bridge or gateway.

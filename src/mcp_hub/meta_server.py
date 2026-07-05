@@ -125,6 +125,7 @@ def _call_tool(manager: HubManager, name: str, arguments: dict[str, Any]) -> dic
         raise KeyError(f"Unknown tool: {name}")
     return {"content": [{"type": "text", "text": json.dumps(payload, indent=2)}]}
 
+
 def _read_resource(manager: HubManager, uri: str) -> str:
     if uri == "hub://services":
         return json.dumps({"services": manager.list_services()}, indent=2)
