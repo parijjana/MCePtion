@@ -1,0 +1,125 @@
+schema_version: 1
+
+output:
+  success_one_line: true
+  failure_limit_per_category: 15
+  report_path: gate_report.json
+  summary_path: gate_summary.md
+
+toolchain:
+  python: "3.14"
+  uv_required: true
+
+paths:
+  source:
+    - gate
+    - src
+    - scripts
+  tests:
+    - tests
+  docs:
+    - docs
+    - README.md
+    - guidelines
+    - templates
+  include:
+    - pyproject.toml
+    - framework.yaml
+  exclude:
+    - .venv
+    - .uv-cache
+    - .test-tmp
+    - .ruff_cache
+    - .mypy_cache
+    - .pytest_cache
+    - __pycache__
+    - src/*.egg-info
+    - data
+    - logs
+    - reports
+    - servers/*
+    - "!servers/README.md"
+    - "!servers/.gitkeep"
+
+analysis:
+  ruff:
+    enabled: true
+    gate: true
+    max_errors: 0
+    max_warnings: 0
+  mypy:
+    enabled: false
+    gate: false
+    strict: false
+    scenario: "Enable after manager/meta interfaces stabilize."
+
+size:
+  python:
+    enabled: true
+    gate: true
+    max_file_lines: 300
+    max_function_statements: 40
+    baseline_path: gate/size-baseline.json
+  markdown:
+    enabled: true
+    gate: false
+    warn_only: true
+    max_file_lines: 500
+    scenario: "Docs are intentionally substantial while architecture is being designed."
+
+structure:
+  enabled: true
+  gate: true
+  rules:
+    no_generated_artifacts:
+      enabled: true
+      patterns:
+        - ".venv/"
+        - ".uv-cache/"
+        - ".test-tmp/"
+        - ".ruff_cache/"
+        - ".mypy_cache/"
+        - ".pytest_cache/"
+        - "__pycache__/"
+        - "*.pyc"
+        - "*.egg-info/"
+    copied_servers_not_tracked:
+      enabled: true
+      allowed:
+        - "servers/README.md"
+        - "servers/.gitkeep"
+    no_absolute_manifest_paths:
+      enabled: true
+      manifest_glob: "**/mcp-server.yaml"
+
+tests:
+  unittest:
+    enabled: true
+    gate: true
+    command:
+      - python
+      - -m
+      - unittest
+      - discover
+      - -s
+      - tests
+      - -p
+      - "test*.py"
+
+coverage:
+  enabled: false
+  measure: false
+  gate: false
+  min_percent: null
+  scenario: "Enable measurement after the gate is stable; gate later through ratchet."
+
+ci:
+  enabled: false
+  workflow_enabled: false
+  scenario: "Enable after mcp-hub has its own GitHub remote."
+
+metrics:
+  enabled: false
+  append_history: false
+  branch: ci-metrics
+  scenario: "Enable only after GitHub Actions exists and the local gate is stable."

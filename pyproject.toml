@@ -1,0 +1,27 @@
+[project]
+name = "mcp-hub"
+version = "0.1.0"
+description = "Local stdio-first MCP service manager and registry."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+mcp-hub = "mcp_hub.cli:main"
+mcp-hub-framework = "mcp_hub.framework:main"
+mcp-hub-manager = "mcp_hub.api_server:main"
+mcp-hub-meta = "mcp_hub.meta_server:main"
+
+[tool.uv]
+package = true
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.20",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

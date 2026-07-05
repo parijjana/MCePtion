@@ -1,0 +1,35 @@
+schema_version: 1
+id: invalid-missing-capabilities
+name: Invalid Missing Capabilities
+version: 0.1.0
+description: Missing CAPABILITIES fixture.
+
+enabled: true
+autostart: false
+restart_policy: never
+
+lifecycle:
+  type: command_per_client
+
+entrypoint:
+  type: command
+  command: uv
+  args:
+    - run
+    - python
+    - -m
+    - invalid_fixture
+  working_directory: .
+
+transport:
+  type: stdio
+
+scripts:
+  start: scripts/start.ps1
+  test: scripts/test.ps1
+
+health:
+  type: mcp_initialize
+  timeout_seconds: 5
+
+ports: []

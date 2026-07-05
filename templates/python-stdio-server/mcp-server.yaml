@@ -1,0 +1,45 @@
+schema_version: 1
+id: example-server
+name: Example Server
+version: 0.1.0
+description: Replace this with a short description of the MCP server.
+
+enabled: true
+autostart: false
+restart_policy: on_failure
+
+lifecycle:
+  type: command_per_client
+
+entrypoint:
+  type: command
+  command: uv
+  args:
+    - run
+    - python
+    - -m
+    - example_server
+  working_directory: .
+
+transport:
+  type: stdio
+
+scripts:
+  start: scripts/start.ps1
+  stop: scripts/stop.ps1
+  test: scripts/test.ps1
+
+health:
+  type: mcp_initialize
+  timeout_seconds: 5
+
+ports: []
+
+logs:
+  stdout: logs/stdout.log
+  stderr: logs/stderr.log
+
+metadata:
+  repository: ""
+  license: MIT
+  tags: []

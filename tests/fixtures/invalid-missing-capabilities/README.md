@@ -1,0 +1,1 @@
+# Invalid Missing Capabilities Fixture

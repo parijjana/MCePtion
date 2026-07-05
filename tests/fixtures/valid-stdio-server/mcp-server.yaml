@@ -1,0 +1,44 @@
+schema_version: 1
+id: valid-stdio
+name: Valid Stdio
+version: 0.1.0
+description: Valid local stdio server fixture.
+
+enabled: true
+autostart: false
+restart_policy: never
+
+lifecycle:
+  type: command_per_client
+
+entrypoint:
+  type: command
+  command: uv
+  args:
+    - run
+    - python
+    - -m
+    - valid_stdio
+  working_directory: .
+
+transport:
+  type: stdio
+
+scripts:
+  start: scripts/start.ps1
+  test: scripts/test.ps1
+
+health:
+  type: mcp_initialize
+  timeout_seconds: 5
+
+ports: []
+
+logs:
+  stdout: ""
+  stderr: logs/stderr.log
+
+metadata:
+  repository: ""
+  license: MIT
+  tags: []

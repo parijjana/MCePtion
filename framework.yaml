@@ -1,0 +1,72 @@
+schema_version: 1
+
+manager:
+  host: 127.0.0.1
+  port: 7420
+  state_file: ./data/runtime-state.json
+  registry_file: ./data/registry.sqlite
+
+dashboard:
+  host: 127.0.0.1
+  port: 7421
+
+meta_mcp:
+  default_transport: stdio
+  stdio:
+    enabled: true
+    command: uv
+    args:
+      - run
+      - python
+      - -m
+      - mcp_hub.meta_server
+  streamable_http:
+    enabled: false
+    host: 127.0.0.1
+    port: 7422
+    path: /mcp
+
+servers:
+  directory: ./servers
+  autostart_enabled_services: true
+  require_capabilities_file: true
+  require_readme_file: true
+
+guidelines:
+  directory: ./guidelines
+  examples_directory: ./guidelines/examples
+
+runtime:
+  default_adapter: process
+  supported_lifecycle_types:
+    - command_per_client
+    - daemon
+    - external
+  supported_transports:
+    - stdio
+    - streamable_http
+
+health:
+  default_timeout_seconds: 5
+  startup_timeout_seconds: 30
+  probe_timeout_seconds: 10
+
+git_sync:
+  enabled: false
+  remote: ""
+  branch: main
+  interval_seconds: 300
+  mode: explicit_include
+  dry_run_first: true
+
+environment_replication:
+  enabled: false
+  manifest: ./environment/servers.yaml
+  lockfile: ./environment/servers.lock.yaml
+  install_directory: ./servers
+
+security:
+  local_only: true
+  require_dashboard_token: false
+  require_manager_token: false
+  allow_remote_bind: false

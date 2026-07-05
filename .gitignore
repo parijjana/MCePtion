@@ -1,0 +1,58 @@
+# Runtime state
+data/
+logs/
+*.log
+*.pid
+
+# Snapshots and packaged archives
+*.zip
+
+# Locally installed child servers
+servers/*
+!servers/README.md
+!servers/.gitkeep
+
+# Gate output
+gate_report.json
+gate_summary.md
+
+# Root planning logs belong to the parent workspace, not this repo
+features/
+progress-logs/
+lessons-learnt/
+
+# Secrets and local config
+.env
+.env.*
+secrets/
+*.secret
+
+# Python
+.venv/
+.uv-cache/
+.test-tmp/
+__pycache__/
+*.py[cod]
+*.egg-info/
+src/*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node/frontend
+node_modules/
+dist/
+build/
+.next/
+.vite/
+
+# Coverage and reports
+coverage/
+htmlcov/
+reports/
+
+# Editor and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

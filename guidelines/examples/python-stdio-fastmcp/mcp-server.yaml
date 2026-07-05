@@ -1,0 +1,47 @@
+schema_version: 1
+id: example-memory-server
+name: Example Memory Server
+version: 0.1.0
+description: Demonstrates a local stdio MCP server with durable JSONL storage.
+
+enabled: true
+autostart: false
+restart_policy: never
+
+lifecycle:
+  type: command_per_client
+
+entrypoint:
+  type: command
+  command: uv
+  args:
+    - run
+    - python
+    - -m
+    - example_memory_server
+  working_directory: .
+
+transport:
+  type: stdio
+
+scripts:
+  start: scripts/start.ps1
+  test: scripts/test.ps1
+
+health:
+  type: mcp_initialize
+  timeout_seconds: 5
+
+ports: []
+
+logs:
+  stdout: ""
+  stderr: logs/stderr.log
+
+metadata:
+  repository: ""
+  license: MIT
+  tags:
+    - example
+    - memory
+    - stdio

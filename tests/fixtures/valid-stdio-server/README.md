@@ -1,0 +1,1 @@
+# Valid Stdio Fixture
