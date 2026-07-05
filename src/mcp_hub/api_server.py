@@ -8,7 +8,7 @@ from typing import Any
 from urllib.parse import unquote, urlparse
 
 from .config import load_config
-from .dashboard import HtmlResponse, render_dashboard
+from .dashboard import HtmlResponse, render_dashboard, render_service_detail
 from .manager import HubManager, ServiceNotFoundError
 
 
@@ -64,6 +64,13 @@ def _handler(manager: HubManager) -> type[BaseHTTPRequestHandler]:
         def _route(self, method: str, parts: list[str]) -> Any:
             if method == "GET" and parts == []:
                 return render_dashboard(manager)
+            if method == "POST" and parts == ["dashboard", "rescan"]:
+                result = manager.rescan()
+                return render_dashboard(
+                    manager, notice={"title": "Rescan complete", "payload": result}
+                )
+            if len(parts) >= 3 and parts[:2] == ["dashboard", "services"]:
+                return self._dashboard_service_route(method, parts[2], parts[3:])
             if method == "GET" and parts == ["health"]:
                 return {"status": "ok"}
             if method == "GET" and parts == ["services"]:
@@ -110,6 +117,52 @@ def _handler(manager: HubManager) -> type[BaseHTTPRequestHandler]:
             ):
                 return {"content": manager.get_example_file(parts[2], "/".join(parts[4:]))}
             raise KeyError("/" + "/".join(parts))
+
+        def _dashboard_service_route(
+            self, method: str, service_id: str, action: list[str]
+        ) -> HtmlResponse:
+            if method == "GET" and not action:
+                return render_service_detail(manager, service_id)
+            if method == "GET" and action == ["connection"]:
+                return render_service_detail(manager, service_id, focus="connection")
+            if method == "POST" and action == ["probe"]:
+                return render_service_detail(
+                    manager,
+                    service_id,
+                    action_result={
+                        "title": "Probe result",
+                        "payload": manager.probe_service(service_id),
+                    },
+                )
+            if method == "POST" and action == ["start"]:
+                return render_service_detail(
+                    manager,
+                    service_id,
+                    action_result={
+                        "title": "Start result",
+                        "payload": manager.start_service(service_id),
+                    },
+                )
+            if method == "POST" and action == ["stop"]:
+                return render_service_detail(
+                    manager,
+                    service_id,
+                    action_result={
+                        "title": "Stop result",
+                        "payload": manager.stop_service(service_id),
+                    },
+                )
+            if method == "POST" and action == ["restart"]:
+                result = {
+                    "stop": manager.stop_service(service_id),
+                    "start": manager.start_service(service_id),
+                }
+                return render_service_detail(
+                    manager,
+                    service_id,
+                    action_result={"title": "Restart result", "payload": result},
+                )
+            raise KeyError(f"/dashboard/services/{service_id}/{'/'.join(action)}")
 
         def _read_json(self) -> dict[str, Any]:
             length = int(self.headers.get("Content-Length", "0"))

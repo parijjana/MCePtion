@@ -6,7 +6,7 @@ from shutil import copytree
 
 from workspace_utils import test_workspace
 
-from mcp_hub.api_server import HtmlResponse, LocalThreadingHTTPServer, _html_dashboard
+from mcp_hub.api_server import HtmlResponse, LocalThreadingHTTPServer, _handler, _html_dashboard
 from mcp_hub.dashboard import render_dashboard
 from mcp_hub.dashboard_style import DASHBOARD_CSS
 from mcp_hub.manager import HubManager
@@ -46,7 +46,8 @@ class ApiServerTests(unittest.TestCase):
         html = render_dashboard(HubManager.from_root(hub_root)).content
 
         self.assertIn("Valid local stdio server fixture.", html)
-        self.assertIn('action="/services/valid-stdio/probe"', html)
+        self.assertIn('action="/dashboard/services/valid-stdio/probe"', html)
+        self.assertIn('action="/dashboard/services/valid-stdio/connection"', html)
         self.assertIn("&quot;command&quot;: &quot;uv&quot;", html)
         self.assertIn("&quot;transport&quot;: &quot;stdio&quot;", html)
         self.assertNotIn(">Stop<", html)
@@ -63,6 +64,8 @@ class ApiServerTests(unittest.TestCase):
 
         self.assertIn("CAPABILITIES.md is required.", html)
         self.assertIn("Unavailable until valid.", html)
+        self.assertIn("validation-detail", html)
+        self.assertIn('class="invalid-row"', html)
         self.assertIn("Invalid", html)
 
     def test_dashboard_shows_daemon_start_stop_restart_controls(self) -> None:
@@ -71,10 +74,54 @@ class ApiServerTests(unittest.TestCase):
 
         html = render_dashboard(HubManager.from_root(hub_root)).content
 
-        self.assertIn('action="/services/valid-daemon/start"', html)
-        self.assertIn('action="/services/valid-daemon/stop"', html)
-        self.assertIn('action="/services/valid-daemon/restart"', html)
+        self.assertIn('action="/dashboard/services/valid-daemon/start"', html)
+        self.assertIn('action="/dashboard/services/valid-daemon/stop"', html)
+        self.assertIn('action="/dashboard/services/valid-daemon/restart"', html)
         self.assertIn("&quot;transport&quot;: &quot;streamable_http&quot;", html)
+
+    def test_dashboard_rescan_route_returns_html_notice(self) -> None:
+        hub_root = _copy_hub_minimum("dashboard-route-rescan")
+        manager = HubManager.from_root(hub_root)
+        handler = _handler(manager).__new__(_handler(manager))
+
+        response = handler._route("POST", ["dashboard", "rescan"])
+
+        self.assertIsInstance(response, HtmlResponse)
+        self.assertIn("Rescan complete", response.content)
+        self.assertIn("notice-panel", response.content)
+
+    def test_dashboard_probe_route_shows_result_panel(self) -> None:
+        hub_root = _copy_hub_minimum("dashboard-route-probe")
+        copytree(
+            ROOT / "tests" / "fixtures" / "valid-stdio-server",
+            hub_root / "servers" / "valid-stdio-server",
+            dirs_exist_ok=True,
+        )
+        manager = HubManager.from_root(hub_root)
+        handler = _handler(manager).__new__(_handler(manager))
+
+        response = handler._route("POST", ["dashboard", "services", "valid-stdio", "probe"])
+
+        self.assertIsInstance(response, HtmlResponse)
+        self.assertIn("Probe result", response.content)
+        self.assertIn("&quot;status&quot;: &quot;ready&quot;", response.content)
+
+    def test_dashboard_connection_route_returns_focused_detail_view(self) -> None:
+        hub_root = _copy_hub_minimum("dashboard-route-connection")
+        copytree(
+            ROOT / "tests" / "fixtures" / "valid-stdio-server",
+            hub_root / "servers" / "valid-stdio-server",
+            dirs_exist_ok=True,
+        )
+        manager = HubManager.from_root(hub_root)
+        handler = _handler(manager).__new__(_handler(manager))
+
+        response = handler._route("GET", ["dashboard", "services", "valid-stdio", "connection"])
+
+        self.assertIsInstance(response, HtmlResponse)
+        self.assertIn("detail view", response.content)
+        self.assertIn("connection-large", response.content)
+        self.assertIn("&quot;command&quot;: &quot;uv&quot;", response.content)
 
 
 def _copy_hub_minimum(name: str) -> Path:

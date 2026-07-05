@@ -76,6 +76,9 @@ DASHBOARD_CSS = """
       text-align: left;
       vertical-align: top;
     }
+    .invalid-row td {
+      background: #fff1f4;
+    }
     th {
       background: var(--ink);
       color: var(--paper);
@@ -162,6 +165,10 @@ DASHBOARD_CSS = """
       border: 2px solid var(--line);
       padding: 4px;
     }
+    .validation-detail summary {
+      cursor: pointer;
+      font-weight: 800;
+    }
     .empty {
       color: var(--muted);
       font-weight: 700;
@@ -180,6 +187,51 @@ DASHBOARD_CSS = """
       box-shadow: var(--shadow);
       padding: 14px;
     }
+    .notice-panel {
+      margin: 0 0 18px;
+      padding: 14px;
+      background: var(--yellow);
+      border: 4px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .notice-panel h2 {
+      margin-top: 0;
+      background: var(--surface);
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, .9fr) minmax(320px, 1.2fr) minmax(260px, .9fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .detail-card {
+      background: var(--surface);
+      border: 4px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+    .detail-card.connection {
+      background: #eefbff;
+    }
+    dl {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 8px 12px;
+      margin: 0 0 14px;
+    }
+    dt {
+      font-weight: 900;
+    }
+    dd {
+      margin: 0;
+    }
+    .connection-large {
+      max-width: none;
+      min-height: 260px;
+    }
+    .control-stack form {
+      display: block;
+    }
     @media (max-width: 860px) {
       main {
         padding: 12px;
@@ -191,6 +243,9 @@ DASHBOARD_CSS = """
       table {
         display: block;
         overflow-x: auto;
+      }
+      .detail-grid {
+        grid-template-columns: 1fr;
       }
     }
 """

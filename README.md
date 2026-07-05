@@ -97,6 +97,8 @@ It lists discovered services, lifecycle class, transport, validation status, cap
 
 The current dashboard is server-rendered and uses a dense neo-brutalist visual style: thick borders, hard shadows, sharp corners, and high-contrast status colors. No frontend build stack is required for the current dashboard.
 
+Browser actions use dashboard-specific HTML routes under `/dashboard/...`. Rescan shows an in-page result panel, Probe opens a service detail page with the probe result, and Connection opens a focused detail view with a larger connection recipe. The JSON API under `/services/...` remains available for scripts and agents.
+
 ## Important Design Constraint
 
 Stdio MCP servers are command-per-client services. The hub can validate them, probe them, and publish their direct launch recipe, but it cannot make one shared background stdio process available to arbitrary agents without adding an explicit bridge or gateway.
