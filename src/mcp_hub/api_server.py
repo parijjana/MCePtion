@@ -25,7 +25,7 @@ def main(argv: list[str] | None = None) -> int:
     manager = HubManager(config)
     server = LocalThreadingHTTPServer((config.manager_host, config.manager_port), _handler(manager))
     print(
-        f"MCP Hub manager listening on http://{config.manager_host}:{config.manager_port}",
+        f"MCePtion manager listening on http://{config.manager_host}:{config.manager_port}",
         flush=True,
     )
     try:

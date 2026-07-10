@@ -1,4 +1,4 @@
-"""MCP Hub local service manager."""
+"""MCePtion local service manager."""
 
 __all__ = ["__version__"]
 

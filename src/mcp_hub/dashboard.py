@@ -26,14 +26,14 @@ def render_dashboard(manager: HubManager, notice: dict[str, Any] | None = None) 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MCP Hub</title>
+  <title>MCePtion</title>
   <style>{DASHBOARD_CSS}</style>
 </head>
 <body>
   <main>
     <header>
       <div>
-        <h1>MCP Hub</h1>
+        <h1>MCePtion</h1>
         <p class="muted">Manager and dashboard: <code>{_escape(api_url)}</code></p>
       </div>
       <form method="post" action="/dashboard/rescan">
@@ -92,7 +92,7 @@ def render_service_detail(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{_escape(service["name"])} - MCP Hub</title>
+  <title>{_escape(service["name"])} - MCePtion</title>
   <style>{DASHBOARD_CSS}</style>
 </head>
 <body>

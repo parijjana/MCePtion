@@ -37,7 +37,7 @@ class FrameworkController:
         if recorded.get("status") == "running" and pid and _is_process_alive(pid):
             return {
                 "status": "already_running",
-                "message": "MCP Hub manager is already running.",
+                "message": "MCePtion manager is already running.",
                 "manager": self._status_from_record(recorded, alive=True),
             }
 
@@ -159,7 +159,7 @@ class FrameworkController:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="mcp-hub-framework")
-    parser.add_argument("--root", default=".", help="MCP Hub root directory.")
+    parser.add_argument("--root", default=".", help="MCePtion root directory.")
     parser.add_argument("--timeout-seconds", type=float, default=10.0)
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("start")

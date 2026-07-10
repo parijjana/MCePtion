@@ -19,9 +19,10 @@ class ApiServerTests(unittest.TestCase):
         response = _html_dashboard(HubManager.from_root(ROOT))
 
         self.assertIsInstance(response, HtmlResponse)
-        self.assertIn("MCP Hub", response.content)
+        self.assertIn("MCePtion", response.content)
         self.assertIn("start-meta-stdio.ps1", response.content)
         self.assertIn("Services", response.content)
+        self.assertNotIn("<h1>MCP Hub</h1>", response.content)
 
     def test_server_allows_address_reuse_for_script_restarts(self) -> None:
         self.assertTrue(LocalThreadingHTTPServer.allow_reuse_address)

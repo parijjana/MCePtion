@@ -45,7 +45,7 @@ class MetaServer:
                             "protocolVersion", "2025-06-18"
                         ),
                         "capabilities": {"tools": {}, "resources": {}},
-                        "serverInfo": {"name": "MCP Hub Meta Server", "version": "0.1.0"},
+                        "serverInfo": {"name": "MCePtion Meta Server", "version": "0.1.0"},
                     },
                 )
             if method == "notifications/initialized":

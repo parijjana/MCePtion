@@ -11,7 +11,7 @@ from .manager import HubManager, ServiceNotFoundError
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="mcp-hub")
-    parser.add_argument("--root", default=".", help="MCP Hub root directory.")
+    parser.add_argument("--root", default=".", help="MCePtion root directory.")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     subparsers.add_parser("list-services")

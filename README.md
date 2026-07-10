@@ -1,6 +1,6 @@
-# MCP Hub
+# MCePtion
 
-MCP Hub is a planned local service manager for independently usable MCP servers.
+MCePtion is a planned local service manager for independently usable MCP servers.
 
 The goal is to run one framework on this machine, point future agents at one meta MCP server, and let the framework discover, validate, monitor, describe, and lifecycle-manage the individual MCP servers that live inside `servers/`.
 
@@ -60,7 +60,7 @@ Planned commands:
 
 ## Local Gate
 
-`.\scripts\gate.ps1` is the local verifier for MCP Hub. It reads `gate/gate.yaml`, runs the enabled checks, and always writes `gate_report.json` at the project root. When invoked with `--ci`, it also writes `gate_summary.md`.
+`.\scripts\gate.ps1` is the local verifier for MCePtion. It reads `gate/gate.yaml`, runs the enabled checks, and always writes `gate_report.json` at the project root. When invoked with `--ci`, it also writes `gate_summary.md`.
 
 The success line is intentionally one line:
 
@@ -121,7 +121,7 @@ dependencies, run child server scripts, clone repositories, or require GitHub.
 
 ## Repository Policy
 
-MCP Hub is its own Git repository under `mcp-hub/`. Track source code, tests, templates, gate configuration, framework configuration, lockfiles, and the approved project documentation set.
+MCePtion is its own Git repository under `mcp-hub/`. Track source code, tests, templates, gate configuration, framework configuration, lockfiles, and the approved project documentation set.
 
 Markdown tracking is allowed for this project in:
 
