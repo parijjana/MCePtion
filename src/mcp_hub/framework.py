@@ -172,7 +172,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "start":
             result = controller.start(timeout_seconds=args.timeout_seconds)
             _print_json(result)
-            return 0 if result["status"] == "started" else 1
+            return 0 if result["status"] in ("started", "already_running") else 1
         if args.command == "stop":
             result = controller.stop(timeout_seconds=args.timeout_seconds)
             _print_json(result)
